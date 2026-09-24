@@ -42,21 +42,18 @@ const validateEmployee = (body) => {
   return null;
 };
 
-
 export const getAllEmployees = (req, res) => {
-  const employees = db.getAllPosts();
+  const employees = db.getAllEmployees();
   res.status(200).json(employees);
 };
 
-
 export const getEmployeeById = (req, res) => {
-  const employee = db.getPostById(+req.params.id);
+  const employee = db.getEmployeeById(+req.params.id);
   if (!employee) {
     return res.status(404).json({ error: "Employee not found" });
   }
   res.status(200).json(employee);
 };
-
 
 export const createEmployee = (req, res) => {
   const error = validateEmployee(req.body);
@@ -64,26 +61,24 @@ export const createEmployee = (req, res) => {
     return res.status(400).json({ error });
   }
 
-  const saved = db.savePost(req.body);
-  const employee = db.getPostById(saved.lastInsertRowid);
+  const saved = db.saveEmployee(req.body);
+  const employee = db.getEmployeeById(saved.lastInsertRowid);
   res.status(201).json(employee);
 };
 
-
 export const deleteEmployee = (req, res) => {
-  const employee = db.getPostById(+req.params.id);
+  const employee = db.getEmployeeById(+req.params.id);
   if (!employee) {
     return res.status(404).json({ error: "Employee not found" });
   }
 
-  db.deletePost(+req.params.id);
+  db.deleteEmployee(+req.params.id);
   res.sendStatus(204);
 };
 
-
 export const updateEmployee = (req, res) => {
   const id = +req.params.id;
-  const employee = db.getPostById(id);
+  const employee = db.getEmployeeById(id);
 
   if (!employee) {
     return res.status(404).json({ error: "Employee not found" });
@@ -94,7 +89,7 @@ export const updateEmployee = (req, res) => {
     return res.status(400).json({ error });
   }
 
-  db.updatePost(id, req.body);
-  const updatedEmployee = db.getPostById(id);
+  db.updateEmployee(id, req.body);
+  const updatedEmployee = db.getEmployeeById(id);
   res.status(200).json(updatedEmployee);
 };
